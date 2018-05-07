@@ -74,6 +74,7 @@ SPI_HandleTypeDef hspi1;
 
 TIM_HandleTypeDef htim3;
 TIM_HandleTypeDef htim4;
+TIM_HandleTypeDef htim10;
 
 UART_HandleTypeDef huart2;
 
@@ -91,6 +92,7 @@ static void MX_TIM3_Init(void);
 static void MX_TIM4_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_SPI1_Init(void);
+static void MX_TIM10_Init(void);
 
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
                                 
@@ -140,6 +142,7 @@ int main(void)
   MX_TIM4_Init();
   MX_I2C1_Init();
   MX_SPI1_Init();
+  MX_TIM10_Init();
   /* USER CODE BEGIN 2 */
   fsm_t * usb_fsm = fsm_new_usb();
   fsm_t * uart_fsm = fsm_new_uart();
@@ -153,8 +156,15 @@ int main(void)
 
   HAL_UART_Receive_IT(&huart2,(uint8_t *)uart_rx,UART_MSG_SIZE);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
-  HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_ALL);
-  HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_ALL);
+  HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_2);
+  HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
+  HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_4);
+  HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_2);
+  HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_3);
+  HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_4);
+  //HAL_TIM_Base_Start_IT(&htim10);
   BSP_ACCELERO_Init();
   BSP_GYRO_Init();
   /* USER CODE END 2 */
@@ -163,13 +173,14 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-
-  /* USER CODE END WHILE */
-      fsm_fire(usb_fsm);
+  	  fsm_fire(usb_fsm);
 	  fsm_fire(uart_fsm);
 	  fsm_fire(parser_fsm);
 	  fsm_fire(accelero_fsm);
 	  fsm_fire(gyro_fsm);
+	  //fsm_fire(compass_fsm);
+  /* USER CODE END WHILE */
+
   /* USER CODE BEGIN 3 */
 
   }
@@ -381,6 +392,22 @@ static void MX_TIM4_Init(void)
   }
 
   HAL_TIM_MspPostInit(&htim4);
+
+}
+
+/* TIM10 init function */
+static void MX_TIM10_Init(void)
+{
+
+  htim10.Instance = TIM10;
+  htim10.Init.Prescaler = 48000;
+  htim10.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim10.Init.Period = 19;
+  htim10.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  if (HAL_TIM_Base_Init(&htim10) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
 
 }
 

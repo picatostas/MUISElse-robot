@@ -1,7 +1,7 @@
 Src/l3gd20.o: ../Src/l3gd20.c \
- C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/l3gd20.h \
- C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/gyro.h
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/l3gd20.h \
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/gyro.h
 
-C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/l3gd20.h:
+/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/l3gd20.h:
 
-C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/gyro.h:
+/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/gyro.h:

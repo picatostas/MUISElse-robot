@@ -1,7 +1,7 @@
 Src/lsm303dlhc.o: ../Src/lsm303dlhc.c \
- C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/lsm303dlhc.h \
- C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/accelero.h
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/lsm303dlhc.h \
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/accelero.h
 
-C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/lsm303dlhc.h:
+/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/lsm303dlhc.h:
 
-C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/accelero.h:
+/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/accelero.h:

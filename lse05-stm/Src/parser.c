@@ -21,8 +21,8 @@ static Received_msgs  msgs;
 static flags cmd = (flags){0,0,0,0,0,0,0};
 
 //global values mentions
-extern TIM_HandleTypeDef htim4;
-extern TIM_HandleTypeDef htim3;
+int pwm_values[]={0,0,0,0};
+extern TIM_HandleTypeDef htim4,htim3,htim10;
 extern rb_struct rb_usb;
 extern rb_struct rb_uart;
 
@@ -130,26 +130,31 @@ static void do_T(fsm_t* this){
 }
 
 static void do_M(fsm_t* this){
-	int pwm_value = 0;
+	//int pwm_value = 0;
 	unsigned char str[3];
 	unsigned char * pv = msgs.buffer[msgs.count];
 	pv+=3;
 	strncpy(str,pv,2);
-	pwm_value = atoi(str);
-	pwm_value = map(pwm_value,0,90,50,250);
+	int pwm_value_temp = atoi(str);
+	//pwm_value = atoi(str);
+	pwm_value_temp = map(pwm_value_temp,0,90,50,250);
 	unsigned char select_char =(unsigned char) msgs.buffer[msgs.count][2];
 	switch (select_char) {
 		case '0':
-			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_1,pwm_value);
+			pwm_values[0]=pwm_value_temp;
+			//__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_1,pwm_value);
 			break;
 		case '1':
-			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,pwm_value);
+			pwm_values[1]=pwm_value_temp;
+			//__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,pwm_value);
 			break;
 		case '2':
-			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_3,pwm_value);
+			pwm_values[2]=pwm_value_temp;
+			//__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_3,pwm_value);
 			break;
 		case '3':
-			__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_4,pwm_value);
+			pwm_values[3]=pwm_value_temp;
+			//__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_4,pwm_value);
 			break;
 		default:
 			break;
@@ -164,24 +169,30 @@ static void do_L(fsm_t* this){
 	unsigned char * pv = msgs.buffer[msgs.count];
 	pv+=3;
 	strncpy(str,pv,2);
+	//int pwm_value_temp = atoi(str);
 	pwm_value = atoi(str);
 	unsigned char select_char =(unsigned char) msgs.buffer[msgs.count][2];
 	switch (select_char) {
 		case '0':
+			//pwm_values[0]=pwm_value_temp;
 			__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_1,pwm_value);
 			break;
 		case '1':
+			//pwm_values[1]=pwm_value_temp;
 			__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_2,pwm_value);
 			break;
 		case '2':
+			//pwm_values[2]=pwm_value_temp;
 			__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_3,pwm_value);
 			break;
 		case '3':
+			//pwm_values[3]=pwm_value_temp;
 			__HAL_TIM_SET_COMPARE(&htim4,TIM_CHANNEL_4,pwm_value);
 			break;
 		default:
 			break;
 	}
+	  HAL_TIM_Base_Start_IT(&htim10);
 	cmd.L = 0;
 }
 
@@ -247,6 +258,62 @@ static void select_device(fsm_t * this){
 	msgs.count--;
 
 }
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
+
+	if (htim->Instance == TIM10){
+		HAL_TIM_Base_Stop_IT(&htim10);
+		uint32_t pwm_increasing = 5;
+		uint32_t future_value[4];
+
+			for (int i = 0; i < 4; i++) {
+				uint32_t AUX_CH;
+				switch (i) {
+					case 0:
+						AUX_CH = TIM_CHANNEL_1;
+						break;
+					case 1:
+						AUX_CH = TIM_CHANNEL_2;
+						break;
+					case 2:
+						AUX_CH = TIM_CHANNEL_3;
+						break;
+					case 3:
+						AUX_CH = TIM_CHANNEL_4;
+						break;
+					default:
+						break;
+				}
+				if (pwm_values[i] == __HAL_TIM_GET_COMPARE(&htim3,AUX_CH)) {
+					continue;
+				}
+				if (pwm_values[i] > __HAL_TIM_GET_COMPARE(&htim3,AUX_CH)){ //new value differs from original
+					future_value[i] = __HAL_TIM_GET_COMPARE(&htim3,AUX_CH) + pwm_increasing;
+					if (future_value[i] < pwm_values[i]){
+						__HAL_TIM_SET_COMPARE(&htim3,AUX_CH,future_value[i]);
+					}
+					else{
+						__HAL_TIM_SET_COMPARE(&htim3,AUX_CH,pwm_values[i]);
+					}
+				}
+				else {
+					future_value[i] = __HAL_TIM_GET_COMPARE(&htim3,AUX_CH) - pwm_increasing;
+					if (future_value[i] > pwm_values[i]){
+						__HAL_TIM_SET_COMPARE(&htim3,AUX_CH,future_value[i]);
+					}
+					else{
+						__HAL_TIM_SET_COMPARE(&htim3,AUX_CH,pwm_values[i]);
+					}
+				}
+
+			}
+			HAL_TIM_Base_Start_IT(&htim10);
+		}
+
+
+}
+
+
 
 //transiitons rules mentions
 static fsm_trans_t parser_tt[] = {

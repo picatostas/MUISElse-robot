@@ -1,4 +1,4 @@
 Src/fsm.o: ../Src/fsm.c \
- C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/fsm.h
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/fsm.h
 
-C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/fsm.h:
+/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/fsm.h:

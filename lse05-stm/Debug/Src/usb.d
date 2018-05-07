@@ -1,13 +1,13 @@
 Src/usb.o: ../Src/usb.c \
- C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/fsm.h \
- C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/usb.h \
- C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/parser.h \
- C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/ring_buf.h
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/fsm.h \
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/usb.h \
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/parser.h \
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/ring_buf.h
 
-C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/fsm.h:
+/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/fsm.h:
 
-C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/usb.h:
+/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/usb.h:
 
-C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/parser.h:
+/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/parser.h:
 
-C:/Users/Pablo/Google\ Drive/Codigo\ robot\ lsel/new/entrega_p1/Inc/ring_buf.h:
+/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/ring_buf.h:
