@@ -15,6 +15,7 @@
 #include "uart.h"
 #include "usb.h"
 #include <stddef.h>
+#include "main.h"
 //timers for sensor definitions
 flags sensor_timer = (flags){0,0,0,0,0,0,0};
 
@@ -130,13 +131,13 @@ void HAL_SYSTICK_Callback(void){
 
 	if (usb_flag == 0) {
 		usb_count++;
-		if (usb_count >= 500) {
+		if (usb_count >= RECEIVE_TIMEOUT) {
 			usb_flag = 1;
 		}
 	}
 	if (uart_flag == 0) {
 		uart_count++;
-		if (uart_count >= 500) {
+		if (uart_count >= RECEIVE_TIMEOUT) {
 			uart_flag = 1;
 		}
 	}

@@ -15,13 +15,14 @@
 #include "uart.h"
 #include "usb.h"
 #include <stddef.h>
-
+#include "main.h"
 //local values for parser fsm
 static Received_msgs  msgs;
 static flags cmd = (flags){0,0,0,0,0,0,0};
 
 //global values mentions
-int pwm_values[]={0,0,0,0};
+//				TILT,PAN,LEFT,RIGHT
+int pwm_values[]={250,140,150,150};
 extern TIM_HandleTypeDef htim4,htim3,htim10;
 extern rb_struct rb_usb;
 extern rb_struct rb_uart;
@@ -109,6 +110,14 @@ static void do_A(fsm_t* this){
 }
 
 static void do_C(fsm_t* this){
+	int send_rate = 0;
+	unsigned char str[4];
+	unsigned char * pv = msgs.buffer[msgs.count];
+	pv+=2;
+	strncpy(str,pv,3);
+	send_rate = atoi(str);
+	send_rate = map(send_rate,0,999,200,999);
+	sensorC.period = (uint32_t)send_rate;
 	cmd.C = 0;
 }
 
@@ -159,6 +168,8 @@ static void do_M(fsm_t* this){
 		default:
 			break;
 	}
+	HAL_TIM_Base_Start_IT(&htim10);
+
 	cmd.M = 0;
 }
 
@@ -192,7 +203,6 @@ static void do_L(fsm_t* this){
 		default:
 			break;
 	}
-	  HAL_TIM_Base_Start_IT(&htim10);
 	cmd.L = 0;
 }
 
@@ -369,7 +379,7 @@ void parseMsg(rb_struct * rb){
 			while (size && (rb_pop(rb) != '\r')) {
 				size--;
 			}
-
+			/*
 			if(rb == &rb_uart){
 				if(HAL_UART_Transmit(&huart2,(uint8_t *)uart_buf,sizeof(uart_buf)-1,50) == HAL_OK){
 					uart_buf[2]++;
@@ -388,7 +398,8 @@ void parseMsg(rb_struct * rb){
 							}
 					}
 				}
-			}
+			}*/
+
 
 		}
 

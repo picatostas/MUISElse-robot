@@ -52,7 +52,8 @@ Src/sensor.o: ../Src/sensor.c \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/ring_buf.h \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/sensor.h \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/uart.h \
- /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/usb.h
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/usb.h \
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/main.h
 
 /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 
@@ -161,3 +162,5 @@ Src/sensor.o: ../Src/sensor.c \
 /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/uart.h:
 
 /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/usb.h:
+
+/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/main.h:

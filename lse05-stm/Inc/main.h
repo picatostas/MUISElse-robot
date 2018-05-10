@@ -144,7 +144,10 @@
 /* #define USE_FULL_ASSERT    1U */
 
 /* USER CODE BEGIN Private defines */
-
+#define TILT_DEF 250
+#define PAN_DEF 140
+#define LEFT_DEF 150
+#define RIGHT_DEF 150
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

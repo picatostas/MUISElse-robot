@@ -137,7 +137,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
-  MX_USB_DEVICE_Init();
+  //MX_USB_DEVICE_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
   MX_I2C1_Init();
@@ -155,29 +155,40 @@ int main(void)
   sensorG.period = 800;
 
   HAL_UART_Receive_IT(&huart2,(uint8_t *)uart_rx,UART_MSG_SIZE);
-  USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+  //HAL_UART_Receive(&huart2,(uint8_t *)uart_rx,6,10);
+ // USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_2);
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_3);
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_4);
+
+
   HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_2);
   HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_3);
   HAL_TIM_PWM_Start(&htim4,TIM_CHANNEL_4);
-  //HAL_TIM_Base_Start_IT(&htim10);
-  BSP_ACCELERO_Init();
-  BSP_GYRO_Init();
+
+  // Valores de inicio para torreta y motores
+
+  __HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_1,TILT_DEF);
+  __HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,PAN_DEF);
+  __HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_3,LEFT_DEF);
+  __HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_4,RIGHT_DEF);
+  HAL_TIM_Base_Start_IT(&htim10);
+  /*BSP_ACCELERO_Init();
+  BSP_GYRO_Init();*/
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-  	  fsm_fire(usb_fsm);
+  	  //fsm_fire(usb_fsm);
 	  fsm_fire(uart_fsm);
 	  fsm_fire(parser_fsm);
-	  fsm_fire(accelero_fsm);
-	  fsm_fire(gyro_fsm);
+	  /*fsm_fire(accelero_fsm);
+	  fsm_fire(gyro_fsm);*/
 	  //fsm_fire(compass_fsm);
   /* USER CODE END WHILE */
 
@@ -402,7 +413,7 @@ static void MX_TIM10_Init(void)
   htim10.Instance = TIM10;
   htim10.Init.Prescaler = 48000;
   htim10.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim10.Init.Period = 19;
+  htim10.Init.Period = 69;
   htim10.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   if (HAL_TIM_Base_Init(&htim10) != HAL_OK)
   {

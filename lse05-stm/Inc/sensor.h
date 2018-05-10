@@ -1,5 +1,7 @@
 #ifndef SENSOR_H
 #define SENSOR_H
+
+#define RECEIVE_TIMEOUT 50
 //structs definitions
 typedef struct{
 	uint8_t A;
