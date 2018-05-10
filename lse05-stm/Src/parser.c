@@ -22,7 +22,7 @@ static flags cmd = (flags){0,0,0,0,0,0,0};
 
 //global values mentions
 //				TILT,PAN,LEFT,RIGHT
-int pwm_values[]={250,140,150,150};
+int pwm_values[]={TILT_DEF,PAN_DEF,LEFT_DEF,RIGHT_DEF};
 extern TIM_HandleTypeDef htim4,htim3,htim10;
 extern rb_struct rb_usb;
 extern rb_struct rb_uart;
@@ -139,31 +139,62 @@ static void do_T(fsm_t* this){
 }
 
 static void do_M(fsm_t* this){
-	//int pwm_value = 0;
+
 	unsigned char str[3];
+	unsigned char l[2],r[2];
 	unsigned char * pv = msgs.buffer[msgs.count];
 	pv+=3;
 	strncpy(str,pv,2);
+	strncpy(l,pv,1);
+	pv+=1;
+	strncpy(r,pv,1);
 	int pwm_value_temp = atoi(str);
-	//pwm_value = atoi(str);
+	int left=atoi(l);
+	int right=atoi(r);
 	pwm_value_temp = map(pwm_value_temp,0,90,50,250);
+	//left = map(left,0,9,50,250);
+	//right = map(right,0,9,50,250);
 	unsigned char select_char =(unsigned char) msgs.buffer[msgs.count][2];
 	switch (select_char) {
 		case '0':
 			pwm_values[0]=pwm_value_temp;
-			//__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_1,pwm_value);
 			break;
 		case '1':
 			pwm_values[1]=pwm_value_temp;
-			//__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_2,pwm_value);
 			break;
 		case '2':
 			pwm_values[2]=pwm_value_temp;
-			//__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_3,pwm_value);
 			break;
 		case '3':
 			pwm_values[3]=pwm_value_temp;
-			//__HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_4,pwm_value);
+			break;
+		case '4':
+			switch (left) {
+				case 0:
+					pwm_values[2]=50;
+					break;
+				case 5:
+					pwm_values[2]=150;
+					break;
+				case 9:
+					pwm_values[2]=250;
+					break;
+				default:
+					break;
+			}
+			switch (right) {
+				case 0:
+					pwm_values[3]=50;
+					break;
+				case 5:
+					pwm_values[3]=150;
+					break;
+				case 9:
+					pwm_values[3]=250;
+					break;
+				default:
+					break;
+			}
 			break;
 		default:
 			break;
