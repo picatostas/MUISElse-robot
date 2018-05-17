@@ -33,6 +33,7 @@
 "Src/stm32f411e_discovery.o"
 "Src/stm32f411e_discovery_accelerometer.o"
 "Src/stm32f411e_discovery_gyroscope.o"
+"Src/stm32f411e_discovery_magnetometer.o"
 "Src/stm32f4xx_hal_msp.o"
 "Src/stm32f4xx_it.o"
 "Src/system_stm32f4xx.o"

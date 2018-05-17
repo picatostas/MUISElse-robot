@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "stm32f411e_discovery_gyroscope.h"
 #include "stm32f411e_discovery_accelerometer.h"
+#include "stm32f411e_discovery_magnetometer.h"
 #include "gyro.h"
 #include "accelero.h"
 #include "magneto.h"
@@ -246,6 +247,10 @@ static void do_S(fsm_t* this){
 		case 'A':
 			if (send_usb == '1') sensorA.usb = 1;else sensorA.usb = 0;
 			if (send_uart == '1')sensorA.uart= 1;else sensorA.uart = 0;
+			break;
+		case 'C':
+			if (send_usb == '1') sensorC.usb = 1;else sensorC.usb = 0;
+			if (send_uart == '1')sensorC.uart= 1;else sensorC.uart = 0;
 			break;
 		case 'G':
 			if (send_usb == '1') sensorG.usb = 1;else sensorG.usb = 0;

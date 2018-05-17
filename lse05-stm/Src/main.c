@@ -58,6 +58,7 @@
 #include <stdlib.h>
 #include "stm32f411e_discovery_gyroscope.h"
 #include "stm32f411e_discovery_accelerometer.h"
+#include "stm32f411e_discovery_magnetometer.h"
 #include "gyro.h"
 #include "accelero.h"
 #include "magneto.h"
@@ -137,7 +138,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_USART2_UART_Init();
-  //MX_USB_DEVICE_Init();
+  MX_USB_DEVICE_Init();
   MX_TIM3_Init();
   MX_TIM4_Init();
   MX_I2C1_Init();
@@ -149,14 +150,16 @@ int main(void)
   fsm_t * parser_fsm = fsm_new_parser();
   fsm_t * accelero_fsm = fsm_new_accelero();
   fsm_t * gyro_fsm = fsm_new_gyro();
+  fsm_t * compass_fsm = fsm_new_compass();
 
 
   sensorA.period = 800;
   sensorG.period = 800;
+  sensorC.period = 800;
 
   HAL_UART_Receive_IT(&huart2,(uint8_t *)uart_rx,UART_MSG_SIZE);
   //HAL_UART_Receive(&huart2,(uint8_t *)uart_rx,6,10);
- // USBD_CDC_ReceivePacket(&hUsbDeviceFS);
+  USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_2);
@@ -176,20 +179,21 @@ int main(void)
   __HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_3,LEFT_DEF);
   __HAL_TIM_SET_COMPARE(&htim3,TIM_CHANNEL_4,RIGHT_DEF);
   HAL_TIM_Base_Start_IT(&htim10);
-  /*BSP_ACCELERO_Init();
-  BSP_GYRO_Init();*/
+  BSP_ACCELERO_Init();
+  BSP_GYRO_Init();
+  BSP_MAGNETO_Init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-  	  //fsm_fire(usb_fsm);
+  	  fsm_fire(usb_fsm);
 	  fsm_fire(uart_fsm);
 	  fsm_fire(parser_fsm);
-	  /*fsm_fire(accelero_fsm);
-	  fsm_fire(gyro_fsm);*/
-	  //fsm_fire(compass_fsm);
+	  fsm_fire(accelero_fsm);
+	  fsm_fire(gyro_fsm);
+	  fsm_fire(compass_fsm);
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */

@@ -14,6 +14,7 @@ C_SRCS += \
 ../Src/stm32f411e_discovery.c \
 ../Src/stm32f411e_discovery_accelerometer.c \
 ../Src/stm32f411e_discovery_gyroscope.c \
+../Src/stm32f411e_discovery_magnetometer.c \
 ../Src/stm32f4xx_hal_msp.c \
 ../Src/stm32f4xx_it.c \
 ../Src/system_stm32f4xx.c \
@@ -35,6 +36,7 @@ OBJS += \
 ./Src/stm32f411e_discovery.o \
 ./Src/stm32f411e_discovery_accelerometer.o \
 ./Src/stm32f411e_discovery_gyroscope.o \
+./Src/stm32f411e_discovery_magnetometer.o \
 ./Src/stm32f4xx_hal_msp.o \
 ./Src/stm32f4xx_it.o \
 ./Src/system_stm32f4xx.o \
@@ -56,6 +58,7 @@ C_DEPS += \
 ./Src/stm32f411e_discovery.d \
 ./Src/stm32f411e_discovery_accelerometer.d \
 ./Src/stm32f411e_discovery_gyroscope.d \
+./Src/stm32f411e_discovery_magnetometer.d \
 ./Src/stm32f4xx_hal_msp.d \
 ./Src/stm32f4xx_it.d \
 ./Src/system_stm32f4xx.d \
@@ -72,7 +75,7 @@ Src/%.o: ../Src/%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: MCU GCC Compiler'
 	@echo $(PWD)
-	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DUSE_HAL_DRIVER -DSTM32F411xE '-D__weak=__attribute__((weak))' '-D__packed="__attribute__((__packed__))"' -I"/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc" -I"/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc" -I"/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy" -I"/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc" -I"/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/CMSIS/Device/ST/STM32F4xx/Include" -I"/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/CMSIS/Include"  -Og -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
+	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DUSE_HAL_DRIVER -DSTM32F411xE '-D__weak=__attribute__((weak))' '-D__packed="__attribute__((__packed__))"' -I"/home/silvia/Escritorio/proyecto-final-lse05/lse05-stm/Inc" -I"/home/silvia/Escritorio/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc" -I"/home/silvia/Escritorio/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy" -I"/home/silvia/Escritorio/proyecto-final-lse05/lse05-stm/Middlewares/ST/STM32_USB_Device_Library/Core/Inc" -I"/home/silvia/Escritorio/proyecto-final-lse05/lse05-stm/Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc" -I"/home/silvia/Escritorio/proyecto-final-lse05/lse05-stm/Drivers/CMSIS/Device/ST/STM32F4xx/Include" -I"/home/silvia/Escritorio/proyecto-final-lse05/lse05-stm/Drivers/CMSIS/Include"  -Og -g3 -Wall -fmessage-length=0 -ffunction-sections -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

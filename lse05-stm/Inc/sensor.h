@@ -34,11 +34,18 @@ typedef struct {
 		float z;
 }DATA_GYRO;
 
+typedef struct {
+	    float x;
+	    float y;
+	    float z;
+
+}DATA_COMP;
+
 // mention global value huart2 from main
 extern UART_HandleTypeDef huart2;
 
 //fsm definition
 fsm_t* fsm_new_gyro();
 fsm_t* fsm_new_accelero();
-
+fsm_t* fsm_new_compass();
 #endif

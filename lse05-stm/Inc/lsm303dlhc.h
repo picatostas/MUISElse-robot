@@ -45,6 +45,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "accelero.h"
+#include "magneto.h"
 
 /** @addtogroup BSP
   * @{
@@ -134,6 +135,7 @@
 /******************************************************************************/
 
 #define I_AM_LMS303DLHC                   ((uint8_t)0x33)
+#define I_AM_LMS303DLHC_MAG                   ((uint8_t)0x3C)
 
 /** @defgroup Acc_Power_Mode_selection
   * @{
@@ -184,10 +186,10 @@
 /** @defgroup Acc_Full_Scale_Selection
   * @{
   */
-#define LSM303DLHC_FULLSCALE_2G            ((uint8_t)0x00)  /*!< ±2 g */
-#define LSM303DLHC_FULLSCALE_4G            ((uint8_t)0x10)  /*!< ±4 g */
-#define LSM303DLHC_FULLSCALE_8G            ((uint8_t)0x20)  /*!< ±8 g */
-#define LSM303DLHC_FULLSCALE_16G           ((uint8_t)0x30)  /*!< ±16 g */
+#define LSM303DLHC_FULLSCALE_2G            ((uint8_t)0x00)  /*!< ï¿½2 g */
+#define LSM303DLHC_FULLSCALE_4G            ((uint8_t)0x10)  /*!< ï¿½4 g */
+#define LSM303DLHC_FULLSCALE_8G            ((uint8_t)0x20)  /*!< ï¿½8 g */
+#define LSM303DLHC_FULLSCALE_16G           ((uint8_t)0x30)  /*!< ï¿½16 g */
 /**
   * @}
   */
@@ -388,13 +390,13 @@
 /** @defgroup Mag_Full_Scale
   * @{
   */ 
-#define  LSM303DLHC_FS_1_3_GA               ((uint8_t) 0x20)  /*!< Full scale = ±1.3 Gauss */
-#define  LSM303DLHC_FS_1_9_GA               ((uint8_t) 0x40)  /*!< Full scale = ±1.9 Gauss */
-#define  LSM303DLHC_FS_2_5_GA               ((uint8_t) 0x60)  /*!< Full scale = ±2.5 Gauss */
-#define  LSM303DLHC_FS_4_0_GA               ((uint8_t) 0x80)  /*!< Full scale = ±4.0 Gauss */
-#define  LSM303DLHC_FS_4_7_GA               ((uint8_t) 0xA0)  /*!< Full scale = ±4.7 Gauss */
-#define  LSM303DLHC_FS_5_6_GA               ((uint8_t) 0xC0)  /*!< Full scale = ±5.6 Gauss */
-#define  LSM303DLHC_FS_8_1_GA               ((uint8_t) 0xE0)  /*!< Full scale = ±8.1 Gauss */
+#define  LSM303DLHC_FS_1_3_GA               ((uint8_t) 0x20)  /*!< Full scale = ï¿½1.3 Gauss */
+#define  LSM303DLHC_FS_1_9_GA               ((uint8_t) 0x40)  /*!< Full scale = ï¿½1.9 Gauss */
+#define  LSM303DLHC_FS_2_5_GA               ((uint8_t) 0x60)  /*!< Full scale = ï¿½2.5 Gauss */
+#define  LSM303DLHC_FS_4_0_GA               ((uint8_t) 0x80)  /*!< Full scale = ï¿½4.0 Gauss */
+#define  LSM303DLHC_FS_4_7_GA               ((uint8_t) 0xA0)  /*!< Full scale = ï¿½4.7 Gauss */
+#define  LSM303DLHC_FS_5_6_GA               ((uint8_t) 0xC0)  /*!< Full scale = ï¿½5.6 Gauss */
+#define  LSM303DLHC_FS_8_1_GA               ((uint8_t) 0xE0)  /*!< Full scale = ï¿½8.1 Gauss */
 /**
   * @}
   */ 
@@ -436,6 +438,7 @@
   */ 
 #define LSM303DLHC_TEMPSENSOR_ENABLE         ((uint8_t) 0x80)   /*!< Temp sensor Enable */
 #define LSM303DLHC_TEMPSENSOR_DISABLE        ((uint8_t) 0x00)   /*!< Temp sensor Disable */
+#define LSM303DLHC_TEMPSENSOR_SENSITIVITY     ((float) 8.0)      /*!< Temp sensitivity  8.0 LSB/deg */
 /**
   * @}
   */
@@ -472,7 +475,14 @@ uint8_t COMPASSACCELERO_IO_Read(uint16_t DeviceAddr, uint8_t RegisterAddr);
 
 /* ACC driver structure */
 extern ACCELERO_DrvTypeDef Lsm303dlhcDrv;
+extern MAGNETO_DrvTypeDef Lsm303dlhcDrv_magneto;
 
+void    LSM303DLHC_MagInit(MAGNETO_InitTypeDef LSM303DLHC_InitStruct);
+void    LSM303DLHC_MagDeInit(void);
+uint8_t LSM303DLHC_MagReadID(void);
+uint8_t LSM303DLHC_MagGetDataStatus(void);
+void    LSM303DLHC_MagReadXYZ(float* pData);
+float   LSM303DLHC_MagReadTemperature();
 /**
   * @}
   */
