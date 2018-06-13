@@ -17,7 +17,7 @@
 #include <stddef.h>
 #include "main.h"
 //timers for sensor definitions
-flags sensor_timer = (flags){0,0,0,0,0,0,0};
+flags sensor_timer = (flags){0,0,0,0,0,0,0,0};
 
 //global values
 extern uint32_t uart_count;
@@ -35,111 +35,49 @@ enum sensor_state{
 static int timer_A(fsm_t* this){
 	return sensor_timer.A;
 }
-static int timer_C(fsm_t* this){
-	return sensor_timer.C;
-}
-static int timer_G(fsm_t* this){
-	return sensor_timer.G;
-}
 static int timer_finished_A(fsm_t* this){
 	return !sensor_timer.A;
 
 }
-static int timer_finished_C(fsm_t* this){
-	return !sensor_timer.C;
-
-}
-static int timer_finished_G(fsm_t* this){
-	return !sensor_timer.G;
-
-}
-
-//outputs definitions
 static void send_A(fsm_t* this){
+	static unsigned char imu_buf[85];
+		int16_t accelero[3]= {0};
+		DATA_ACCELERO data_ACC;
+		 	BSP_ACCELERO_GetXYZ(accelero);
+			data_ACC.x = accelero[0];
+			data_ACC.y = accelero[1];
+			data_ACC.z = accelero[2];
+			float compass[3]={0};
+			DATA_COMP data_COMP;
+				    BSP_MAGNETO_GetXYZ(compass);
+					data_COMP.x = compass[0];
+					data_COMP.y = compass[1];
+					data_COMP.z = compass[2];
+					float gyroscope[3]= {0};
+						DATA_GYRO data;
+						BSP_GYRO_GetXYZ(gyroscope);
+						data.x = gyroscope[0];
+						data.y = gyroscope[1];
+						data.z = gyroscope[2];
+			sprintf(imu_buf,"S:%06d,%06d,%06d,%08.2f,%08.2f,%08.2f,%08.2f,%08.2f,%08.2f\r\n",data_ACC.x,data_ACC.y,data_ACC.z,data_COMP.x,data_COMP.y,data_COMP.z,data.x,data.y,data.z);
 
-	int16_t accelero[3]= {0};
+				if (sensorA.uart){
+					HAL_UART_Transmit(&huart2, (uint8_t *)imu_buf,sizeof(imu_buf)-1,10);
 
-	DATA_ACCELERO data;
- 	BSP_ACCELERO_GetXYZ(accelero);
-	data.x = accelero[0];
-	data.y = accelero[1];
-	data.z = accelero[2];
-	static unsigned char accelero_buf[] = "A:XXXXXX,YYYYYY,ZZZZZZ\r\n";
-	sprintf(accelero_buf,"A:%06d,%06d,%06d\r\n",data.x,data.y,data.z);
+				}
+				if (sensorA.usb){
+					if (USBD_CDC_SetTxBuffer(&hUsbDeviceFS, imu_buf, sizeof(imu_buf)-1)==USBD_OK){
+						if (USBD_CDC_TransmitPacket(&hUsbDeviceFS)==USBD_OK){
+						}
+					}
 
-	if (sensorA.uart){
-		HAL_UART_Transmit(&huart2, (uint8_t *)accelero_buf,sizeof(accelero_buf)-1,10);
-
-	}
-	if (sensorA.usb){
-		if (USBD_CDC_SetTxBuffer(&hUsbDeviceFS, accelero_buf, sizeof(accelero_buf)-1)==USBD_OK){
-			if (USBD_CDC_TransmitPacket(&hUsbDeviceFS)==USBD_OK){
-			}
-		}
-
-	}
-	sensorA.count = 0;
-	sensor_timer.A = 0;
+				}
+			sensorA.count = 0;
+				sensor_timer.A = 0;
 }
 
-static void send_C(fsm_t* this){
-	static unsigned char compass_buf[100];
-	float compass[3]={0};
 
-	DATA_COMP data;
-
-	BSP_MAGNETO_GetXYZ(compass);
-	data.x = compass[0];
-	data.y = compass[1];
-	data.z = compass[2];
-	//static unsigned char compass_buf[] = "C:XXXXXXXX,YYYYYYYY,ZZZZZZZZ\r\n";
-	sprintf(compass_buf,"C:%08.2f,%08.2f,%08.2f\r\n",data.x,data.y,data.z);
-
-	if (sensorC.uart){
-		HAL_UART_Transmit(&huart2, (uint8_t *)compass_buf,sizeof(compass_buf)-1,10);
-
-	}
-	if (sensorC.usb){
-		if (USBD_CDC_SetTxBuffer(&hUsbDeviceFS, compass_buf, sizeof(compass_buf)-1)==USBD_OK){
-			if (USBD_CDC_TransmitPacket(&hUsbDeviceFS)==USBD_OK){
-			}
-		}
-
-	}
-	sensorC.count = 0;
-	sensor_timer.C = 0;
-}
-
-static void send_G(fsm_t* this){
-
-	float gyroscope[3]= {0};
-
-	DATA_GYRO data;
-
-	BSP_GYRO_GetXYZ(gyroscope);
-
-	data.x = gyroscope[0];
-	data.y = gyroscope[1];
-	data.z = gyroscope[2];
-	static unsigned char gyroscope_buf[] = "G:XXXXXXXX,YYYYYYYY,ZZZZZZZZ\r\n";
-	sprintf(gyroscope_buf,"G:%08.2f,%08.2f,%08.2f\r\n",data.x,data.y,data.z);
-
-	if (sensorG.uart) {
-		HAL_UART_Transmit(&huart2, (uint8_t *)gyroscope_buf,sizeof(gyroscope_buf)-1,10);
-
-	}
-	if(sensorG.usb){
-		if (USBD_CDC_SetTxBuffer(&hUsbDeviceFS, gyroscope_buf, sizeof(gyroscope_buf)-1)==USBD_OK){
-			if (USBD_CDC_TransmitPacket(&hUsbDeviceFS)==USBD_OK){
-			}
-		}
-	}
-	sensorG.count = 0;
-	sensor_timer.G = 0;
-}
-
-// transition rules
-static fsm_trans_t accelero_tt[] = {
+static fsm_trans_t imu_tt[] = {
 
   { SENSOR_IDLE, timer_A, SENSOR_SEND,send_A},
   { SENSOR_SEND,timer_finished_A, SENSOR_IDLE,  NULL },
@@ -147,28 +85,8 @@ static fsm_trans_t accelero_tt[] = {
 
 };
 
-fsm_t* fsm_new_accelero() {
-	return fsm_new(accelero_tt);
-}
-
-static fsm_trans_t compass_tt[] = {
-		{ SENSOR_IDLE, timer_C, SENSOR_SEND,send_C},
-		{ SENSOR_SEND,timer_finished_C, SENSOR_IDLE,  NULL },
-		{-1, NULL, -1, NULL }
-};
-fsm_t* fsm_new_compass() {
-	return fsm_new(compass_tt);
-}
-
-static fsm_trans_t gyro_tt[] = {
-
-  { SENSOR_IDLE, timer_G, SENSOR_SEND,send_G},
-  { SENSOR_SEND,timer_finished_G, SENSOR_IDLE,  NULL },
-  {-1, NULL, -1, NULL }
-
-};
-fsm_t* fsm_new_gyro() {
-	return fsm_new(gyro_tt);
+fsm_t* fsm_new_imu() {
+	return fsm_new(imu_tt);
 }
 
 // fsm_usb interruption
@@ -176,33 +94,23 @@ void HAL_SYSTICK_Callback(void){
 
 	if (usb_flag == 0) {
 		usb_count++;
-		if (usb_count >= RECEIVE_TIMEOUT) {
+		if (usb_count >= 500) {
 			usb_flag = 1;
 		}
 	}
 	if (uart_flag == 0) {
 		uart_count++;
-		if (uart_count >= RECEIVE_TIMEOUT) {
+		if (uart_count >= 500) {
 			uart_flag = 1;
 		}
 	}
+
 	if (sensor_timer.A == 0) {
-		sensorA.count++;
-		if (sensorA.count >= sensorA.period) {
-			sensor_timer.A = 1;
+			sensorA.count++;
+			if (sensorA.count >= sensorA.period) {
+				sensor_timer.A = 1;
+			}
+
 		}
 
-	}
-	if(sensor_timer.C ==0) {
-		sensorC.count++;
-		if(sensorC.count >= sensorC.period) {
-			sensor_timer.C = 1;
-		}
-	}
-	if (sensor_timer.G == 0) {
-		sensorG.count++;
-		if (sensorG.count >= sensorG.period) {
-			sensor_timer.G = 1;
-		}
-	}
 }

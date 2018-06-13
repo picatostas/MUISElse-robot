@@ -148,14 +148,10 @@ int main(void)
   fsm_t * usb_fsm = fsm_new_usb();
   fsm_t * uart_fsm = fsm_new_uart();
   fsm_t * parser_fsm = fsm_new_parser();
-  fsm_t * accelero_fsm = fsm_new_accelero();
-  fsm_t * gyro_fsm = fsm_new_gyro();
-  fsm_t * compass_fsm = fsm_new_compass();
+  fsm_t * imu_fsm = fsm_new_imu();
 
+   sensorA.period = 800;
 
-  sensorA.period = 800;
-  sensorG.period = 800;
-  sensorC.period = 800;
 
   HAL_UART_Receive_IT(&huart2,(uint8_t *)uart_rx,UART_MSG_SIZE);
   //HAL_UART_Receive(&huart2,(uint8_t *)uart_rx,6,10);
@@ -191,9 +187,7 @@ int main(void)
   	  fsm_fire(usb_fsm);
 	  fsm_fire(uart_fsm);
 	  fsm_fire(parser_fsm);
-	  fsm_fire(accelero_fsm);
-	  fsm_fire(gyro_fsm);
-	  fsm_fire(compass_fsm);
+	  fsm_fire(imu_fsm);
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */

@@ -45,7 +45,5 @@ typedef struct {
 extern UART_HandleTypeDef huart2;
 
 //fsm definition
-fsm_t* fsm_new_gyro();
-fsm_t* fsm_new_accelero();
-fsm_t* fsm_new_compass();
+fsm_t* fsm_new_imu();
 #endif
