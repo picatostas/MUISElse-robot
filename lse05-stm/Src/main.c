@@ -66,9 +66,12 @@
 #include "sensor.h"
 #include "uart.h"
 #include "usb.h"
+#include "collision.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
+ADC_HandleTypeDef hadc1;
+
 I2C_HandleTypeDef hi2c1;
 
 SPI_HandleTypeDef hspi1;
@@ -94,6 +97,7 @@ static void MX_TIM4_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_SPI1_Init(void);
 static void MX_TIM10_Init(void);
+static void MX_ADC1_Init(void);
 
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
                                 
@@ -144,17 +148,19 @@ int main(void)
   MX_I2C1_Init();
   MX_SPI1_Init();
   MX_TIM10_Init();
+  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-  fsm_t * usb_fsm = fsm_new_usb();
-  fsm_t * uart_fsm = fsm_new_uart();
-  fsm_t * parser_fsm = fsm_new_parser();
-  fsm_t * imu_fsm = fsm_new_imu();
-
-   sensorA.period = 800;
+  fsm_t * usb_fsm  	      =       fsm_new_usb();
+  fsm_t * uart_fsm 	      =      fsm_new_uart();
+  fsm_t * parser_fsm      =    fsm_new_parser();
+  fsm_t * imu_fsm 	      =       fsm_new_imu();
+  fsm_t * proximity_fsm   = fsm_new_proximity();
+  fsm_t * collision_fsm   = fsm_new_collision();
+  sensorIMU.period = 800;
+  sensorP.period   =  50;
 
 
   HAL_UART_Receive_IT(&huart2,(uint8_t *)uart_rx,UART_MSG_SIZE);
-  //HAL_UART_Receive(&huart2,(uint8_t *)uart_rx,6,10);
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
 
   HAL_TIM_PWM_Start(&htim3,TIM_CHANNEL_1);
@@ -184,10 +190,14 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-  	  fsm_fire(usb_fsm);
-	  fsm_fire(uart_fsm);
-	  fsm_fire(parser_fsm);
-	  fsm_fire(imu_fsm);
+	  //fsm_fire(proximity_fsm);
+	 // fsm_fire(collision_fsm);
+	 // if(collision_fsm->current_state == 0){ // COLLISION_IDLE
+		  fsm_fire(usb_fsm);
+	  	  fsm_fire(uart_fsm);
+	  	  fsm_fire(parser_fsm);
+	  	  fsm_fire(imu_fsm);
+	//  }
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
@@ -252,6 +262,43 @@ void SystemClock_Config(void)
 
   /* SysTick_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+}
+
+/* ADC1 init function */
+static void MX_ADC1_Init(void)
+{
+
+  ADC_ChannelConfTypeDef sConfig;
+
+    /**Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion) 
+    */
+  hadc1.Instance = ADC1;
+  hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+  hadc1.Init.Resolution = ADC_RESOLUTION_8B;
+  hadc1.Init.ScanConvMode = DISABLE;
+  hadc1.Init.ContinuousConvMode = DISABLE;
+  hadc1.Init.DiscontinuousConvMode = DISABLE;
+  hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  hadc1.Init.NbrOfConversion = 1;
+  hadc1.Init.DMAContinuousRequests = DISABLE;
+  hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  if (HAL_ADC_Init(&hadc1) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
+    /**Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time. 
+    */
+  sConfig.Channel = ADC_CHANNEL_14;
+  sConfig.Rank = 1;
+  sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
+  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  {
+    _Error_Handler(__FILE__, __LINE__);
+  }
+
 }
 
 /* I2C1 init function */
@@ -411,7 +458,7 @@ static void MX_TIM10_Init(void)
   htim10.Instance = TIM10;
   htim10.Init.Prescaler = 48000;
   htim10.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim10.Init.Period = 69;
+  htim10.Init.Period = 39;
   htim10.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   if (HAL_TIM_Base_Init(&htim10) != HAL_OK)
   {

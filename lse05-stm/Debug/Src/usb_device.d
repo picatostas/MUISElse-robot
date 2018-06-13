@@ -20,6 +20,8 @@ Src/usb_device.o: ../Src/usb_device.c \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma_ex.h \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h \
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h \
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc_ex.h \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h \
@@ -87,6 +89,10 @@ Src/usb_device.o: ../Src/usb_device.c \
 /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma_ex.h:
 
 /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h:
+
+/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h:
+
+/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc_ex.h:
 
 /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h:
 

@@ -19,7 +19,7 @@
 #include "main.h"
 //local values for parser fsm
 static Received_msgs  msgs;
-static flags cmd = (flags){0,0,0,0,0,0,0};
+static flags cmd = (flags){0,0,0,0,0};
 
 //global values mentions
 //				TILT,PAN,LEFT,RIGHT
@@ -41,9 +41,6 @@ enum parser_state{
 	PARSER_IDLE,
 	PARSER_READFIRST,
 	PARSER_A,
-	PARSER_C,
-	PARSER_G,
-	PARSER_T,
 	PARSER_M,
 	PARSER_L,
 	PARSER_S
@@ -61,24 +58,9 @@ static int check_command_count(fsm_t * this){
 	return 0;
 }
 
-static int cmd_A(fsm_t* this){
+static int cmd_IMU(fsm_t* this){
 
-	return cmd.A;
-}
-
-static int cmd_C(fsm_t* this){
-
-	return cmd.C;
-}
-
-static int cmd_G(fsm_t* this){
-
-	return cmd.G;
-}
-
-static int cmd_T(fsm_t* this){
-
-	return cmd.T;
+	return cmd.IMU;
 }
 
 static int cmd_M(fsm_t* this){
@@ -97,7 +79,7 @@ static int cmd_S(fsm_t* this){
 }
 
 //outputs functions definitions
-static void do_A(fsm_t* this){
+static void do_IMU(fsm_t* this){
 
 	int send_rate = 0;
 	unsigned char str[4];
@@ -106,37 +88,8 @@ static void do_A(fsm_t* this){
 	strncpy(str,pv,3);
 	send_rate = atoi(str);
 	send_rate = map(send_rate,0,999,200,999);
-	sensorA.period = (uint32_t)send_rate;
-	cmd.A = 0;
-}
-
-static void do_C(fsm_t* this){
-	int send_rate = 0;
-	unsigned char str[4];
-	unsigned char * pv = msgs.buffer[msgs.count];
-	pv+=2;
-	strncpy(str,pv,3);
-	send_rate = atoi(str);
-	send_rate = map(send_rate,0,999,200,999);
-	sensorC.period = (uint32_t)send_rate;
-	cmd.C = 0;
-}
-
-static void do_G(fsm_t* this){
-
-	int send_rate = 0;
-	unsigned char str[4];
-	unsigned char * pv = msgs.buffer[msgs.count];
-	pv+=2;
-	strncpy(str,pv,3);
-	send_rate = atoi(str);
-	send_rate = map(send_rate,0,999,200,999);
-	sensorG.period = (uint32_t)send_rate;
-	cmd.G = 0;
-}
-
-static void do_T(fsm_t* this){
-	cmd.T = 0;
+	sensorIMU.period = (uint32_t)send_rate;
+	cmd.IMU = 0;
 }
 
 static void do_M(fsm_t* this){
@@ -245,16 +198,8 @@ static void do_S(fsm_t* this){
 	unsigned char send_uart   =(unsigned char) msgs.buffer[msgs.count][4];
 	switch (select_char){
 		case 'A':
-			if (send_usb == '1') sensorA.usb = 1;else sensorA.usb = 0;
-			if (send_uart == '1')sensorA.uart= 1;else sensorA.uart = 0;
-			break;
-		case 'C':
-			if (send_usb == '1') sensorC.usb = 1;else sensorC.usb = 0;
-			if (send_uart == '1')sensorC.uart= 1;else sensorC.uart = 0;
-			break;
-		case 'G':
-			if (send_usb == '1') sensorG.usb = 1;else sensorG.usb = 0;
-			if (send_uart == '1')sensorG.uart= 1;else sensorG.uart = 0;
+			if (send_usb  == '1')sensorIMU.usb = 1;else  sensorIMU.usb = 0;
+			if (send_uart == '1')sensorIMU.uart= 1;else sensorIMU.uart = 0;
 			break;
 		default:
 			break;
@@ -267,10 +212,7 @@ static void do_S(fsm_t* this){
 
 static void select_device(fsm_t * this){
 
-	cmd.A = 0;
-	cmd.C = 0;
-	cmd.G = 0;
-	cmd.T = 0;
+	cmd.IMU = 0;
 	cmd.M = 0;
 	cmd.L = 0;
 	cmd.S = 0;
@@ -278,16 +220,7 @@ static void select_device(fsm_t * this){
 
 	switch (select_char){
 		case 'A':
-			cmd.A = 1;
-			break;
-		case 'C':
-			cmd.C = 1;
-			break;
-		case 'G':
-			cmd.G = 1;
-			break;
-		case 'T':
-			cmd.T = 1;
+			cmd.IMU = 1;
 			break;
 		case 'M':
 			cmd.M = 1;
@@ -365,17 +298,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 static fsm_trans_t parser_tt[] = {
 
   { PARSER_IDLE, check_command_count, PARSER_READFIRST, select_device},
-  { PARSER_READFIRST,cmd_A, PARSER_A,  do_A },
-  { PARSER_READFIRST,cmd_C, PARSER_C,  do_C },
-  { PARSER_READFIRST,cmd_G, PARSER_G,  do_G },
-  { PARSER_READFIRST,cmd_T, PARSER_T,  do_T },
+  { PARSER_READFIRST,cmd_IMU, PARSER_A,do_IMU },
   { PARSER_READFIRST,cmd_M, PARSER_M,  do_M },
   { PARSER_READFIRST,cmd_L, PARSER_L,  do_L },
   { PARSER_READFIRST,cmd_S, PARSER_S,  do_S },
   { PARSER_A,return_true, PARSER_IDLE,  NULL },
-  { PARSER_C,return_true, PARSER_IDLE,  NULL },
-  { PARSER_G,return_true, PARSER_IDLE,  NULL },
-  { PARSER_T,return_true, PARSER_IDLE,  NULL },
   { PARSER_M,return_true, PARSER_IDLE,  NULL },
   { PARSER_L,return_true, PARSER_IDLE,  NULL },
   { PARSER_S,return_true, PARSER_IDLE,  NULL },
@@ -415,26 +342,6 @@ void parseMsg(rb_struct * rb){
 			while (size && (rb_pop(rb) != '\r')) {
 				size--;
 			}
-			/*
-			if(rb == &rb_uart){
-				if(HAL_UART_Transmit(&huart2,(uint8_t *)uart_buf,sizeof(uart_buf)-1,50) == HAL_OK){
-					uart_buf[2]++;
-					if (uart_buf[2] > '9'){
-						uart_buf[2] = '0';
-					}
-				}
-			}
-
-			if (rb == &rb_usb){
-				if (USBD_CDC_SetTxBuffer(&hUsbDeviceFS, usb_buf, sizeof(usb_buf)-1)==USBD_OK){
-					if (USBD_CDC_TransmitPacket(&hUsbDeviceFS)==USBD_OK){
-						usb_buf[2]++;
-						if (usb_buf[2] > '9') {
-							usb_buf[2] = '0';
-							}
-					}
-				}
-			}*/
 
 
 		}

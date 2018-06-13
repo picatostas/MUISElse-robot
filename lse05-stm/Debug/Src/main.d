@@ -20,6 +20,8 @@ Src/main.o: ../Src/main.c \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma_ex.h \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h \
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h \
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc_ex.h \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h \
@@ -55,7 +57,9 @@ Src/main.o: ../Src/main.c \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/ring_buf.h \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/sensor.h \
  /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/uart.h \
- /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/usb.h
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/usb.h \
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/collision.h \
+ /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/fsm.h
 
 /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/main.h:
 
@@ -98,6 +102,10 @@ Src/main.o: ../Src/main.c \
 /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma_ex.h:
 
 /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h:
+
+/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc.h:
+
+/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc_ex.h:
 
 /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash.h:
 
@@ -170,3 +178,7 @@ Src/main.o: ../Src/main.c \
 /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/uart.h:
 
 /home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/usb.h:
+
+/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/collision.h:
+
+/home/pablo/MISE/LSEL/proyecto-final-lse05/lse05-stm/Inc/fsm.h:

@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Src/collision.c \
 ../Src/fsm.c \
 ../Src/l3gd20.c \
 ../Src/lsm303dlhc.c \
@@ -26,6 +27,7 @@ C_SRCS += \
 ../Src/usbd_desc.c 
 
 OBJS += \
+./Src/collision.o \
 ./Src/fsm.o \
 ./Src/l3gd20.o \
 ./Src/lsm303dlhc.o \
@@ -48,6 +50,7 @@ OBJS += \
 ./Src/usbd_desc.o 
 
 C_DEPS += \
+./Src/collision.d \
 ./Src/fsm.d \
 ./Src/l3gd20.d \
 ./Src/lsm303dlhc.d \

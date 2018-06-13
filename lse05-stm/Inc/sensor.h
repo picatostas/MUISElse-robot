@@ -4,10 +4,8 @@
 #define RECEIVE_TIMEOUT 20
 //structs definitions
 typedef struct{
-	uint8_t A;
-	uint8_t C;
-	uint8_t G;
-	uint8_t T;
+	uint8_t IMU;
+	uint8_t P;
 	uint8_t M;
 	uint8_t L;
 	uint8_t S;
@@ -15,12 +13,12 @@ typedef struct{
 
 typedef struct
 {
-    uint32_t   count;
-	uint32_t  period;
+    uint32_t       count;
+	uint32_t      period;
 	uint8_t 	 	 usb;
 	uint8_t 		uart;
 } Sensor;
-Sensor sensorA, sensorG,sensorC,sensorT;
+Sensor sensorIMU,sensorP;
 
 typedef struct {
 		int16_t x;
@@ -43,7 +41,8 @@ typedef struct {
 
 // mention global value huart2 from main
 extern UART_HandleTypeDef huart2;
-
+extern ADC_HandleTypeDef hadc1;
 //fsm definition
 fsm_t* fsm_new_imu();
+fsm_t* fsm_new_proximity();
 #endif
