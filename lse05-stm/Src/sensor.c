@@ -23,8 +23,8 @@ extern int collision_detected,wall_is_near,wall_is_lost;
 //global values
 extern uint32_t uart_count;
 extern uint8_t   uart_flag;
-extern uint8_t    usb_flag;
-extern uint32_t  usb_count;
+//extern uint8_t    usb_flag;
+//extern uint32_t  usb_count;
 
 
 #define WALL_COLLISION 180
@@ -157,15 +157,17 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc){
 // fsm_usb interruption
 void HAL_SYSTICK_Callback(void){
 
+	/*
 	if (usb_flag == 0) {
 		usb_count++;
 		if (usb_count >= 500) {
 			usb_flag = 1;
 		}
 	}
+	*/
 	if (uart_flag == 0) {
 		uart_count++;
-		if (uart_count >= 500) {
+		if (uart_count >= 250) {
 			uart_flag = 1;
 		}
 	}

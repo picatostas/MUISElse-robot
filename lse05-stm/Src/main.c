@@ -85,7 +85,7 @@ UART_HandleTypeDef huart2;
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 uint8_t test[]= "HOLA\r\n";
-uint8_t uart_rx[20];
+uint8_t uart_rx[512];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/

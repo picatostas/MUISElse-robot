@@ -127,9 +127,15 @@ static void do_M(fsm_t* this){
 				case 0:
 					pwm_values[2]=50;
 					break;
+//				case 2:
+//					pwm_values[2]=100;
+//					break;
 				case 5:
 					pwm_values[2]=150;
 					break;
+//				case 7:
+//					pwm_values[2]=200;
+//					break;
 				case 9:
 					pwm_values[2]=250;
 					break;
@@ -140,9 +146,15 @@ static void do_M(fsm_t* this){
 				case 0:
 					pwm_values[3]=50;
 					break;
+//				case 2:
+//					pwm_values[3]=100;
+//					break;
 				case 5:
 					pwm_values[3]=150;
 					break;
+//				case 7:
+//					pwm_values[3]=200;
+//					break;
 				case 9:
 					pwm_values[3]=250;
 					break;
