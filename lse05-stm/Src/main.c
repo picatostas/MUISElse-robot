@@ -193,7 +193,7 @@ int main(void)
 	  //fsm_fire(proximity_fsm);
 	 // fsm_fire(collision_fsm);
 	 // if(collision_fsm->current_state == 0){ // COLLISION_IDLE
-		  fsm_fire(usb_fsm);
+		  //fsm_fire(usb_fsm);
 	  	  fsm_fire(uart_fsm);
 	  	  fsm_fire(parser_fsm);
 	  	  fsm_fire(imu_fsm);

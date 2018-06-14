@@ -7,7 +7,7 @@ enum uart_state{
 	UART_IDLE,
 	UART_PARSE
 };
-extern uint8_t uart_rx[20];
+extern uint8_t uart_rx[512];
 extern UART_HandleTypeDef huart2;
 rb_struct rb_uart;
 uint32_t uart_count;

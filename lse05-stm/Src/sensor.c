@@ -20,6 +20,7 @@
 flags sensor_timer = (flags){0,0,0,0,0};
 uint8_t proximity_value,proximity_measure_RDY;
 extern int collision_detected,wall_is_near,wall_is_lost;
+float  heading = 0;
 //global values
 extern uint32_t uart_count;
 extern uint8_t   uart_flag;
@@ -63,6 +64,8 @@ static void send_IMU(fsm_t* this){
 	data_COMP.x = compass[0];
 	data_COMP.y = compass[1];
 	data_COMP.z = compass[2];
+
+	heading = 100*((atan2(data_COMP.y,data_COMP.x)*180)/3.14159);
 
 	float gyroscope[3]= {0};
 	DATA_GYRO data;
@@ -118,18 +121,21 @@ static void read_adc(){
 
 	if(proximity_value > WALL_COLLISION){
 		collision_detected = 1;
-		wall_is_lost 	   = 0;
 		wall_is_near 	   = 0;
+		wall_is_lost 	   = 0;
+
 	}
 	else if(proximity_value > WALL_NEAR){
 		collision_detected = 0;
-		wall_is_lost 	   = 1;
-		wall_is_near 	   = 0;
+		wall_is_near 	   = 1;
+		wall_is_lost 	   = 0;
+
 	}
 	else{
 		collision_detected = 0;
-		wall_is_lost 	   = 0;
-		wall_is_near 	   = 1;
+		wall_is_near 	   = 0;
+		//wall_is_lost 	   = 1;
+
 	}
 	proximity_measure_RDY = 0;
 

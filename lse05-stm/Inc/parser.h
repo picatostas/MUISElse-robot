@@ -8,7 +8,7 @@
 //message size definitions
 #define MSG_SIZE 6
 #define UART_MSG_SIZE 6
-#define MAX_MSG 3
+#define MAX_MSG 128
 
 typedef struct{
 	unsigned char buffer[MAX_MSG][MSG_SIZE];
