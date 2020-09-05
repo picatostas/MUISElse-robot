@@ -6,3 +6,6 @@ Jose Antonio Moral Parras
 Daniel Gala Montes
 Silvia Hervas
 Filippo Mangani
+
+
+![robot-img](/robot-lsel.png?raw=true "Robot Lsel")
